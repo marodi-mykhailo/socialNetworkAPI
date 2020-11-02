@@ -10,8 +10,9 @@ const router = Router()
 router.post(
     '/register',
     [
+        check('username', 'Minimum length of username 4 symbols, max 25').isLength({min: 4, max: 25}),
         check('email', 'Wrong Email address').isEmail(),
-        check('password', 'Minimum length of password 6 symbols').isLength({min: 6})
+        check('password', 'Minimum length of password 6 symbols, max 8').isLength({min: 6, max: 8})
     ],
     async (req, res) => {
         try {
@@ -24,18 +25,25 @@ router.post(
                 })
             }
 
-            const {email, password} = req.body
+            const {email, password, username} = req.body
             const candidate = await User.findOne({email})
+            const candidate2 = await User.findOne({username})
 
             if (candidate) {
                 return res.status(400).json({message: "Current User already exist"})
             }
+            if (candidate2) {
+                return res.status(400).json({message: "Current Username already in use"})
+            }
             const hashedPassword = await bcrypt.hash(password, 12)
-            const user = new User({email, password: hashedPassword})
+            const user = new User({username, email, password: hashedPassword})
             await user.save()
-            res.status(200).json({message: "User created"})
+            res.status(200).json({
+                message: "User created",
+                resultCode: 0
+            })
         } catch (e) {
-            res.status(500).json({message: "Something gone wrong"})
+            res.status(500).json({message: "Something gone wrong", erorr: e.message})
         }
     })
 
@@ -67,12 +75,13 @@ router.post(
                 return res.status(400).json({message: "Wrong email or password"})
             }
 
-            const token = jwt.sign({userId: user.id},)
+            const token = jwt.sign({userId: user.id}, config.get('jwtSecret'),
+                {expiresIn: '1h'})
+
+            res.json({token, userId: user.id})
         } catch (e) {
             res.status(500).json(
-                {message: "Something gone wrong"},
-                config.get('jwtSecret'),
-                {expiresIn: '1h'}
+                {message: "Something gone wrong"}
             )
         }
     }
