@@ -1,0 +1,8 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/marodi-mykhailo/socialNetworkAPI.git",
+  "author": "marodi-mykhailo <mykhailo.marodi@gmail.com>",
+  "license": "MIT"
+}
