@@ -20,7 +20,9 @@ mongoose
         console.log('Connected to the Database successfully');
     });
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(async (req, res, next) => {
     if (req.headers["x-access-token"]) {
