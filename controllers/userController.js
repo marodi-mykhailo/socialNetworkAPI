@@ -2,6 +2,8 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+require("dotenv").config();
+
 async function hashPassword(password) {
     return await bcrypt.hash(password, 10);
 }
@@ -105,9 +107,9 @@ exports.deleteUser = async (req, res, next) => {
     }
 }
 
-const { roles } = require('../roles')
+const {roles} = require('../roles')
 
-exports.grantAccess = function(action, resource) {
+exports.grantAccess = function (action, resource) {
     return async (req, res, next) => {
         try {
             const permission = roles.can(req.user.role)[action](resource);
@@ -123,7 +125,7 @@ exports.grantAccess = function(action, resource) {
     }
 }
 
-exports.allowIfLoggedin = async (req, res, next) => {
+exports.allowIfLoggedIn = async (req, res, next) => {
     try {
         const user = res.locals.loggedInUser;
         if (!user)
@@ -131,6 +133,23 @@ exports.allowIfLoggedin = async (req, res, next) => {
                 error: "You need to be logged in to access this route"
             });
         req.user = user;
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+exports.getMe = async (req, res, next) => {
+    try {
+        const user = res.locals.loggedInUser;
+        if (!user)
+            return res.status(401).json({
+                error: "You need to be logged in to access this route"
+            });
+        res.status(200).json({
+            data: user
+        });
         next();
     } catch (error) {
         next(error);
