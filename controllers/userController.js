@@ -67,6 +67,7 @@ exports.getUsers = async (req, res, next) => {
 }
 
 exports.getUser = async (req, res, next) => {
+    debugger
     try {
         const userId = req.params.userId;
         const user = await User.findById(userId);
@@ -143,10 +144,6 @@ exports.allowIfLoggedIn = async (req, res, next) => {
 exports.getMe = async (req, res, next) => {
     try {
         const user = res.locals.loggedInUser;
-        if (!user)
-            return res.status(401).json({
-                error: "You need to be logged in to access this route"
-            });
         res.status(200).json({
             data: user
         });

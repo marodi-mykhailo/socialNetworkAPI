@@ -6,7 +6,7 @@
   "author": "marodi-mykhailo <mykhailo.marodi@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon ./server.js"
+    "start": "nodemon --inspect ./server.js"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
