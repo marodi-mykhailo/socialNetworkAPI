@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const serviceController = require('../controllers/serviceController')
+const orderController = require('../controllers/orderController')
 const validations = require('../validation/user.validation');
 
 ///////////////////// user Routes /////////////////////
@@ -31,5 +32,18 @@ router.post('/createService', userController.allowIfLoggedIn, serviceController.
 router.put('/updateService/:serviceId', userController.allowIfLoggedIn, serviceController.updateService);
 
 router.delete('/deleteService', userController.allowIfLoggedIn, serviceController.deleteService)
+
+/////////////// order Routes //////////////////////
+
+router.get('/getOrder/:orderId', userController.allowIfLoggedIn, orderController.getOrder)
+
+router.get('/getOrders', userController.allowIfLoggedIn, orderController.getOrders)
+
+router.post('/createOrder', userController.allowIfLoggedIn, orderController.createOrder)
+
+router.put('/updateOrder', userController.allowIfLoggedIn, orderController.updateOrder)
+
+router.delete('/deleteOrder', userController.allowIfLoggedIn, orderController.deleteOrder)
+
 
 module.exports = router;
