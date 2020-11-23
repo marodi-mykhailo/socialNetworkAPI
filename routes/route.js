@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const serviceController = require('../controllers/serviceController')
 const orderController = require('../controllers/orderController')
+const postController = require('../controllers/postController')
 const validations = require('../validation/user.validation');
 
 ///////////////////// user Routes /////////////////////
@@ -31,7 +32,7 @@ router.post('/createService', userController.allowIfLoggedIn, serviceController.
 
 router.put('/updateService/:serviceId', userController.allowIfLoggedIn, serviceController.updateService);
 
-router.delete('/deleteService', userController.allowIfLoggedIn, serviceController.deleteService)
+router.delete('/deleteService/:serviceId', userController.allowIfLoggedIn, serviceController.deleteService)
 
 /////////////// order Routes //////////////////////
 
@@ -41,9 +42,25 @@ router.get('/getOrders', userController.allowIfLoggedIn, orderController.getOrde
 
 router.post('/createOrder', userController.allowIfLoggedIn, orderController.createOrder)
 
-router.put('/updateOrder', userController.allowIfLoggedIn, orderController.updateOrder)
+router.put('/updateOrder/:orderId', userController.allowIfLoggedIn, orderController.updateOrder)
 
-router.delete('/deleteOrder', userController.allowIfLoggedIn, orderController.deleteOrder)
+router.delete('/deleteOrder/:orderId', userController.allowIfLoggedIn, orderController.deleteOrder)
+
+////////////// post Routes ////////////////////////
+
+router.get('/getPost/:postId', userController.allowIfLoggedIn, postController.getPost)
+
+router.get('/getPosts', userController.allowIfLoggedIn, postController.getPosts)
+
+router.post('/createPost', userController.allowIfLoggedIn, postController.createPost)
+
+router.put('/updatePost/:postId', userController.allowIfLoggedIn, postController.updatePost)
+
+router.delete('/deletePost/:postId', userController.allowIfLoggedIn, postController.deletePost)
+
+router.post('/like/:postId', userController.allowIfLoggedIn, postController.likePost)
+
+router.delete('/like/:postId', userController.allowIfLoggedIn, postController.unLikePost)
 
 
 module.exports = router;

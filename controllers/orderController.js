@@ -36,7 +36,8 @@ exports.getOrder = async (req, res, next) => {
 exports.updateOrder = async (req, res, next) => {
     try {
         const orderId = req.params.orderId
-        const updatedOrder = await Order.findByIdAndUpdate(orderId, req.body)
+        await Order.findByIdAndUpdate(orderId, req.body)
+        const updatedOrder =  await Order.findById(orderId)
         res.status(200).json(responseBody(0, updatedOrder, "Order has been updated"))
     } catch (error) {
         next(error)
@@ -47,7 +48,7 @@ exports.deleteOrder = async (req, res, next) => {
     try {
         const orderId = req.params.orderId
         await Order.findByIdAndDelete(orderId)
-        res.status(200).json(responseBody(0, null, "Order has been deleted"))
+        res.status(200).json(responseBody(0, {}, "Order has been deleted"))
     } catch (error) {
         next(error)
     }

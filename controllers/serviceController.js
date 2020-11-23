@@ -49,7 +49,7 @@ exports.deleteService = async (req, res, next) => {
     try{
         const serviceId = req.params.serviceId
         await Service.findByIdAndDelete(serviceId);
-        res.status(200).json(responseBody(0,null, "Service has been delete"))
+        res.status(200).json(responseBody(0,{}, "Service has been delete"))
     }catch (error) {
         next(error)
     }
